@@ -2,7 +2,7 @@ import { basename, dirname, join } from 'path';
 import { execPromise, ProcessingResult } from './helpers';
 import { existsSync } from 'fs';
 
-export async function generateAlassSubtitles(srtPath: string, videoPath: string): Promise<ProcessingResult> {
+export async function generateAlassMimicSubtitles(srtPath: string, otherSrtPath: string): Promise<ProcessingResult> {
   const directory = dirname(srtPath);
   const srtBaseName = basename(srtPath, '.srt');
   const outputPath = join(directory, `${srtBaseName}.alass.srt`);
@@ -16,7 +16,7 @@ export async function generateAlassSubtitles(srtPath: string, videoPath: string)
   }
 
   try {
-    const command = `alass "${videoPath}" "${srtPath}" "${outputPath}"`;
+    const command = `alass "${otherSrtPath}" "${srtPath}" "${outputPath}"`;
     console.log(`${new Date().toLocaleString()} Processing: ${command}`);
     await execPromise(command);
     return {
