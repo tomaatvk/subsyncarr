@@ -1,11 +1,14 @@
 import { basename } from 'path';
 import { findMatchingVideoFile } from './findMatchingVideoFile';
+import { findMatchingSrtFile } from './findMatchingSrtFile';
 import { generateAutosubsyncSubtitles } from './generateAutosubsyncSubtitles';
 import { generateFfsubsyncSubtitles } from './generateFfsubsyncSubtitles';
 import { generateAlassSubtitles } from './generateAlassSubtitles';
+import { generateAlassMimicSubtitles } from './generateAlassMimicSubtitles';
 
 export const processSrtFile = async (srtFile: string) => {
   const videoFile = findMatchingVideoFile(srtFile);
+  const otherSrtFile = findMatchingSrtFile(srtFile);
   const includeEngines = process.env.INCLUDE_ENGINES?.split(',') || ['ffsubsync', 'autosubsync', 'alass'];
 
   if (videoFile) {
@@ -20,6 +23,14 @@ export const processSrtFile = async (srtFile: string) => {
     if (includeEngines.includes('alass')) {
       const alassResult = await generateAlassSubtitles(srtFile, videoFile);
       console.log(`${new Date().toLocaleString()} alass result: ${alassResult.message}`);
+    }
+    if (includeEngines.includes('alassMimic')) {
+      if (otherSrtFile != null) {
+        const alassMimicResult = await generateAlassMimicSubtitles(srtFile, otherSrtFile);
+        console.log(`${new Date().toLocaleString()} alass result: ${alassResult.message}`);
+      } else {
+        console.log(`${new Date().toLocaleString()} alassMimic unavailable for file`);
+      }
     }
   } else {
     console.log(`${new Date().toLocaleString()} No matching video file found for: ${basename(srtFile)}`);
