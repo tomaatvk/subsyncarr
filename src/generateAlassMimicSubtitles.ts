@@ -5,7 +5,7 @@ import { existsSync } from 'fs';
 export async function generateAlassMimicSubtitles(srtPath: string, otherSrtPath: string): Promise<ProcessingResult> {
   const directory = dirname(srtPath);
   const srtBaseName = basename(srtPath, '.srt');
-  const outputPath = join(directory, `${srtBaseName}.alass.srt`);
+  const outputPath = join(directory, `${srtBaseName}.alassMimic.srt`);
 
   const exists = existsSync(outputPath);
   if (exists) {
