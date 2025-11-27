@@ -1,20 +1,9 @@
 import { existsSync } from 'fs';
 import { basename, dirname, join } from 'path';
 
-type VideoExtension = '.mkv' | '.mp4' | '.avi' | '.mov';
-const VIDEO_EXTENSIONS: VideoExtension[] = ['.mkv', '.mp4', '.avi', '.mov'];
-
-export function findMatchingVideoFile(srtPath: string): string | null {
+export function findMatchingSrtFile(srtPath: string): string | null {
   const directory = dirname(srtPath);
   const srtBaseName = basename(srtPath, '.srt');
-
-  // Try exact match first
-  for (const ext of VIDEO_EXTENSIONS) {
-    const possibleVideoPath = join(directory, `${srtBaseName}${ext}`);
-    if (existsSync(possibleVideoPath)) {
-      return possibleVideoPath;
-    }
-  }
 
   // Progressive tag removal - split by dots and try removing one segment at a time
   const segments = srtBaseName.split('.');
@@ -22,11 +11,9 @@ export function findMatchingVideoFile(srtPath: string): string | null {
     segments.pop(); // Remove the last segment
     const baseNameToTry = segments.join('.');
 
-    for (const ext of VIDEO_EXTENSIONS) {
-      const possibleVideoPath = join(directory, `${baseNameToTry}${ext}`);
-      if (existsSync(possibleVideoPath)) {
-        return possibleVideoPath;
-      }
+    const possibleSrtPath = join(directory, `${baseNameToTry}.en.srt`);
+    if (existsSync(possibleSrtPath)) {
+      return possibleSrtPath;
     }
   }
 
