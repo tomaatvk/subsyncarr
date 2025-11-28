@@ -15,6 +15,10 @@ export function findMatchingSrtFile(srtPath: string): string | null {
     if (existsSync(possibleSrtPath)) {
       return possibleSrtPath;
     }
+    const altPossibleSrtPath = join(directory, `${baseNameToTry}.en.hi.srt`);
+    if (existsSync(altPossibleSrtPath)) {
+      return altPossibleSrtPath;
+    }
   }
 
   return null;
