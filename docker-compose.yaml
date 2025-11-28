@@ -2,7 +2,7 @@ name: subsyncarr
 
 services:
   subsyncarr:
-    image: mrorbitman/subsyncarr:latest
+    image: tomaatvk/subsyncarr:latest
     container_name: subsyncarr
     volumes:
       # Any path configured with SCAN_PATHS env var must be mounted
