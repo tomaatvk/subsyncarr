@@ -25,7 +25,7 @@ export const processSrtFile = async (srtFile: string) => {
       console.log(`${new Date().toLocaleString()} alass result: ${alassResult.message}`);
     }
     if (includeEngines.includes('alassMimic')) {
-      if (otherSrtFile != null && srtFile.includes('.nl.srt')) {
+      if (otherSrtFile != null && (srtFile.includes('.nl.srt') || srtFile.includes('.nl.hi.srt'))) {
         const alassMimicResult = await generateAlassMimicSubtitles(srtFile, otherSrtFile);
         console.log(`${new Date().toLocaleString()} alass result: ${alassResult.message}`);
       } else {
